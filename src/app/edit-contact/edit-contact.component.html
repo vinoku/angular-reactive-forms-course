@@ -2,52 +2,63 @@
   <h1 class="header">
     Edit Contact
   </h1>
-  <form>
+  <form [formGroup]="contactForm" (ngSubmit)="saveContact()">
     <section>
       <nav>Name/Info</nav>
       <div>
-        <input placeholder="First Name" />
-        <input placeholder="Last Name" />
-        <input placeholder="Date of Birth" />
-        <input placeholder="Favorites Ranking" />
+        <input formControlName="firstName" placeholder="First Name" />
+        <input formControlName="lastName" placeholder="Last Name" />
+        <input type="date" [value]="contactForm.controls.dateOfBirth.value | date: 'yyyy-MM-dd'" formControlName="dateOfBirth" placeholder="Date of Birth" />
+        <div>
+          <span>Favorites Ranking:</span>
+          <input formControlName="favoritesRanking" type="range" min="0" max="5" placeholder="Favorites Ranking" />
+          <span>{{ contactForm.controls.favoritesRanking.value }}</span>
+        </div>
+        <div>
+          <input type="checkbox" formControlName="personal" /> Personal
+        </div>
       </div>
     </section>
     <section>
       <nav>Phone</nav>
-      <div class="flex-column">
+      <div formGroupName="phone" class="flex-column">
         <div class="flex-group">
-          <input placeholder="Phone" />
+          <input formControlName="phoneNumber" placeholder="Phone" />
           <img src="/assets/plus-grey-blue.png" class="add" />
         </div>
         <div class="radio">
-          <input type="radio" value="mobile"> Mobile
-          <input type="radio" value="work"> Work
-          <input type="radio" value="other"> Other
+          <span *ngFor="let type of phoneTypes">
+            <input formControlName="phoneType" type="radio" [value]="type.value"> {{ type.title }}
+          </span>
         </div>
       </div>
     </section>
     <section>
       <nav>Address</nav>
       <div>
-        <div class="address">
+        <div formGroupName="address" class="address">
           <div class="flex-group">
-            <input placeholder="Address" />
+            <input formControlName="streetAddress" placeholder="Address" />
             <img src="/assets/plus-grey-blue.png" class="add" />
           </div>
-          <input placeholder="City" />
-          <input placeholder="State/Region" />
-          <input placeholder="Zip/Postal Code" />
-          <select>
-            <option value="home">Home</option>
-            <option value="work">Work</option>
-            <option value="mobile">Other</option>
+          <input formControlName="city" placeholder="City" />
+          <input formControlName="state" placeholder="State/Region" />
+          <input formControlName="postalCode" placeholder="Zip/Postal Code" />
+          <select formControlName="addressType">
+            <option *ngFor="let type of addressTypes" [value]="type.value">{{ type.title }}</option>
           </select>
         </div>
       </div>
     </section>
+    <section>
+      <nav>Notes</nav>
+      <div>
+        <textarea placeholder="Notes" rows="5" formControlName="notes"></textarea>
+      </div>
+    </section>
+    <div class="buttons">
+      <button class="secondary">Cancel</button>
+      <button type="submit" class="primary">Save</button>
+    </div>
   </form>
-  <div class="buttons">
-    <button class="secondary">Cancel</button>
-    <button class="primary" (click)="saveContact()">Save</button>
-  </div>
 </div>
