@@ -6,9 +6,12 @@
     <section>
       <nav>Name/Info</nav>
       <div>
-        <input formControlName="firstName" placeholder="First Name" />
+        <input formControlName="firstName" [class.error]="firstName.touched && firstName.invalid" placeholder="First Name" />
+        <em *ngIf="firstName.errors?.['required'] && firstName.touched">Please enter a First Name</em>
+        <em *ngIf="firstName.errors?.['minlength'] && firstName.touched">First Name must be at least 3 characters</em>
         <input formControlName="lastName" placeholder="Last Name" />
-        <input type="date" [value]="contactForm.controls.dateOfBirth.value | date: 'yyyy-MM-dd'" formControlName="dateOfBirth" placeholder="Date of Birth" />
+        <input type="date" [value]="contactForm.controls.dateOfBirth.value | date: 'yyyy-MM-dd'"
+          formControlName="dateOfBirth" placeholder="Date of Birth" />
         <div>
           <span>Favorites Ranking:</span>
           <input formControlName="favoritesRanking" type="range" min="0" max="5" placeholder="Favorites Ranking" />
@@ -36,7 +39,7 @@
     <section>
       <nav>Address</nav>
       <div>
-        <div formGroupName="address" class="address">
+        <div formGroupName="address" class="address" [class.error]="contactForm.controls.address.invalid && contactForm.controls.address.dirty">
           <div class="flex-group">
             <input formControlName="streetAddress" placeholder="Address" />
             <img src="/assets/plus-grey-blue.png" class="add" />
@@ -48,17 +51,19 @@
             <option *ngFor="let type of addressTypes" [value]="type.value">{{ type.title }}</option>
           </select>
         </div>
+        <em *ngIf="contactForm.controls.address.invalid && contactForm.controls.address.dirty">Invalid Address</em>
       </div>
     </section>
     <section>
       <nav>Notes</nav>
       <div>
-        <textarea placeholder="Notes" rows="5" formControlName="notes"></textarea>
+        <textarea [class.error]="notes.invalid" placeholder="Notes" rows="5" formControlName="notes"></textarea>
+        <em *ngIf="notes.errors?.['restrictedWords']">Restricted words found: {{ notes.errors?.['restrictedWords'] }}</em>
       </div>
     </section>
     <div class="buttons">
       <button class="secondary">Cancel</button>
-      <button type="submit" class="primary">Save</button>
+      <button type="submit" class="primary" [disabled]="contactForm.invalid">Save</button>
     </div>
   </form>
 </div>

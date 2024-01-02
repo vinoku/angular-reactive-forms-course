@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { Contact, addressTypeValues, phoneTypeValues } from '../contacts/contact.model';
+import { restrictedWordsValidator } from '../validators/restricted-words.validators';
 
 @Component({
   templateUrl: './edit-contact.component.html',
@@ -14,7 +15,7 @@ export class EditContactComponent implements OnInit {
   contactForm = this.fb.nonNullable.group({
     id: '',
     personal: false,
-    firstName: '',
+    firstName: ['', [Validators.required, Validators.minLength(3)]],
     lastName: '',
     // dateOfBirth: '',
     dateOfBirth: <Date | null>null,
@@ -24,13 +25,13 @@ export class EditContactComponent implements OnInit {
       phoneType: ''
     }),
     address: this.fb.nonNullable.group({
-      streetAddress: '',
-      city: '',
-      state: '',
-      postalCode: '',
+      streetAddress: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      postalCode: ['', Validators.required],
       addressType: ''
     }),
-    notes: ''
+    notes: ['', restrictedWordsValidator(["foo", "bar"])]
   });
 
   constructor(private route: ActivatedRoute,
@@ -52,5 +53,13 @@ export class EditContactComponent implements OnInit {
   saveContact() {
     this.contactsService.saveContact(this.contactForm.getRawValue())
       .subscribe(() => this.router.navigate(['/contacts']));
+  }
+
+  get firstName() {
+    return this.contactForm.controls.firstName;
+  }
+
+  get notes() {
+    return this.contactForm.controls.notes;
   }
 }
