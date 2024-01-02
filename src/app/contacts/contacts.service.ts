@@ -16,11 +16,6 @@ export class ContactsService {
         const dob = c.dateOfBirth ? new Date(c.dateOfBirth) : null;
         return { ...c, dateOfBirth: dob }
       }));
-    // If working with date as string '1994-05-05T06:00:00.00Z'
-    // .pipe(map(c => {
-    //   c.dateOfBirth = c.dateOfBirth.split('T')[0];
-    //   return c;
-    // }));
   }
 
   getAllContacts(): Observable<Contact[]> {

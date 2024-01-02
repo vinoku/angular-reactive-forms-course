@@ -1,9 +1,9 @@
 export interface Contact {
+  icon: string,
   id: string,
   personal: boolean,
   firstName: string,
   lastName: string,
-  // dateOfBirth: string,
   dateOfBirth: Date | null,
   favoritesRanking: number | null,
   phone: Phone,
@@ -27,11 +27,11 @@ export interface Address {
 export const phoneTypeValues = [
   { title: 'Mobile', value: 'mobile' },
   { title: 'Work', value: 'work' },
-  { title: 'Other', value: 'other' }
-]
+  { title: 'Other', value: 'other' },
+];
 
 export const addressTypeValues = [
   { title: 'Home', value: 'home' },
   { title: 'Work', value: 'work' },
-  { title: 'Other', value: 'other' }
-]
+  { title: 'Other', value: 'other' },
+];
