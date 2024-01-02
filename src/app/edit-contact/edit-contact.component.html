@@ -24,16 +24,20 @@
       </div>
     </section>
     <section>
-      <nav>Phone</nav>
-      <div formGroupName="phone" class="flex-column">
-        <div class="flex-group">
-          <input formControlName="phoneNumber" placeholder="Phone" />
-          <img src="/assets/plus-grey-blue.png" class="add" />
-        </div>
-        <div class="radio">
-          <span *ngFor="let phoneType of phoneTypes">
-            <input type="radio" formControlName="phoneType" [value]="phoneType.value"> {{phoneType.title}}
-          </span>
+      <nav>Phones</nav>
+      <div formArrayName="phones">
+        <div *ngFor="let phone of contactForm.controls.phones.controls; let i=index" [formGroupName]="i" class="flex-column">
+          <div class="flex-group">
+            <input formControlName="phoneNumber" placeholder="Phone" />
+            <img src="/assets/plus-grey-blue.png" class="add" (click)="addPhone()" />
+          </div>
+          <em *ngIf="phone.controls.phoneNumber.invalid">Preffered Phone is required</em>
+          <div class="radio">
+            <span *ngFor="let phoneType of phoneTypes">
+              <input type="radio" formControlName="phoneType" [value]="phoneType.value"> {{phoneType.title}}
+            </span>
+          </div>
+          <span><input type="checkbox" formControlName="preferred" />Preferred</span>
         </div>
       </div>
     </section>
